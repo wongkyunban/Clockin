@@ -12,11 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.wong.clockin.util.DBHelper;
 import com.wong.clockin.util.DataBean;
 import java.util.ArrayList;
@@ -59,7 +58,7 @@ public class MainActivity extends Activity {
     protected void onRestart(){
         super.onRestart();
         this.listItems = getListItems();
-        Toast.makeText(this,listItems.isEmpty()+"",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,listItems.isEmpty()+"",Toast.LENGTH_SHORT).show();
         if(!listItems.isEmpty()){
             this.relatelayout.setVisibility(View.GONE);
             setListItems(listItems);
@@ -95,6 +94,8 @@ public class MainActivity extends Activity {
         public TextView title;
         public TextView day;
         public Button btn;
+        public ImageView clockinImg;                //己签到图片
+
     }
 
 
@@ -133,6 +134,7 @@ public class MainActivity extends Activity {
              listItemView.title = (TextView)convertView.findViewById(R.id.titleItem);
              listItemView.day = (TextView)convertView.findViewById(R.id.clockinDay);
              listItemView.btn = (Button)convertView.findViewById(R.id.clockinBtn);
+             listItemView.clockinImg = (ImageView)convertView.findViewById(R.id.clockinImg);
              //设置控件集到convertView
              convertView.setTag(listItemView);
          }else {
@@ -143,11 +145,23 @@ public class MainActivity extends Activity {
          listItemView.title.setText(listItems.get(position)
                  .getTitle());
          listItemView.day.setText("第"+String.valueOf(listItems.get(position).getAmount())+"天");
+         //判断是否已签到，是 显示已签到的图片和禁止签到按钮，否：打开按钮，隐藏己签到图片
+         if(listItems.get(position).getIsClockIn() == 1){
+             listItemView.clockinImg.setVisibility(View.VISIBLE);
+             listItemView.btn.setEnabled(false);
+         }
+         if(listItems.get(position).getIsClockIn() == 0){
+             listItemView.clockinImg.setVisibility(View.GONE);
+             listItemView.btn.setEnabled(true);
+
+         }
+
+         final ListItemView itemView = listItemView;
          listItemView.btn.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
                  //显示物品详情
-                 showDetailInfo(selectID);
+                 showDetailInfo(selectID,itemView);
              }
          });
 
@@ -158,7 +172,7 @@ public class MainActivity extends Activity {
         return hasChecked[checkedID];
     }
 
-    private void showDetailInfo(final int clickID) {
+    private void showDetailInfo(final int clickID,final ListItemView itemView) {
         new AlertDialog.Builder(context)
                 .setTitle("马上签到")
                 .setMessage("恭喜你又坚持了一天！")
@@ -166,11 +180,16 @@ public class MainActivity extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         DBHelper helper = new DBHelper(context);
-                        Toast.makeText(context,clickID+"",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context,clickID+"",Toast.LENGTH_SHORT).show();
                         int d = listItems.get(clickID).getAmount();
                         d += 1;
                         listItems.get(clickID).setAmount(d);
+                        listItems.get(clickID).setIsClockIn(1);
                         helper.update(listItems.get(clickID));
+                        itemView.day.setText("第"+String.valueOf(listItems.get(clickID).getAmount())+"天");
+                        itemView.clockinImg.setVisibility(View.VISIBLE);
+                        itemView.btn.setEnabled(false);
+
                     }
                 })
                 .setNegativeButton("快完成了",null)

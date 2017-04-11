@@ -45,10 +45,12 @@
             android:layout_margin="5sp"
             android:id="@+id/clockinDay"/>
         <ImageView
+            android:id="@+id/clockinImg"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:background="@drawable/already"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:visibility="gone"/>
     </FrameLayout>
 
 </RelativeLayout>
