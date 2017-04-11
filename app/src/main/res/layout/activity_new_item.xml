@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.wong.clockin.MainActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/limegreen">
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:textStyle="normal"
+            android:textColor="@color/white"
+            android:background="@null"
+            android:layout_alignParentStart="true"
+            android:text="@string/fa_arrow_left"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:textStyle="normal"
+            android:textColor="@color/white"
+            android:background="@null"
+            android:layout_centerInParent="true"
+            android:text="@string/checkName"
+            />
+        <Button
+            android:id="@+id/addBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:textStyle="normal"
+            android:textColor="@color/white"
+            android:background="@null"
+            android:layout_alignParentEnd="true"
+            android:text="@string/fa_check"/>
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/itemNameEdt"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+
+</LinearLayout>

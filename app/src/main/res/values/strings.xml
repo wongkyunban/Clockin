@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">签到</string>
+    <string name="clockinName">签到名称</string>
+    <string name="checkName">添加签到项</string>
+    <string name="fa_bars">&#xf0c9;</string>
+    <string name="fa_plus">&#xf067;</string>
+    <string name="fa_angle_right">&#xf105;</string>
+    <string name="fa_gear">&#xf013;</string>
+    <string name="fa_arrow_left">&#xf060;</string>
+    <string name="fa_check">&#xf00c;</string>
+    <string name="hint">你还没有签到项呢！\n赶快去添加吧！</string>
+    <string name="notEmpty">签到项不能为空！</string>
+</resources>
