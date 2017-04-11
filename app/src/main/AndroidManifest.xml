@@ -3,6 +3,7 @@
     package="com.wong.clockin">
 
     <application
+        android:name=".application.ClockInApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
@@ -20,7 +21,8 @@
         <service
             android:name=".service.UpdateClockInStatusService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
     </application>
 
 </manifest>

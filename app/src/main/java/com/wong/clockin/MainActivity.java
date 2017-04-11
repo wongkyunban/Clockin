@@ -1,6 +1,7 @@
 package com.wong.clockin;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,10 +17,16 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.wong.clockin.util.DBHelper;
 import com.wong.clockin.util.DataBean;
+import com.wong.clockin.util.Loading;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends Activity {
 
@@ -28,6 +35,9 @@ public class MainActivity extends Activity {
     private ListView listView;
     private ListViewAdapter listViewAdapter;
     private List<DataBean> listItems = new ArrayList<DataBean>();
+    private Button refreshBtn;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +55,37 @@ public class MainActivity extends Activity {
             }
         });
         this.relatelayout = (RelativeLayout)findViewById(R.id.relatelayout);
-        listView = (ListView)findViewById(R.id.main_list);
+        this.listView = (ListView)findViewById(R.id.main_list);
+
+        this.refreshBtn = (Button)findViewById(R.id.refresh);
+        this.refreshBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog = Loading.createLoadingDialog(MainActivity.this,"正在刷新...");
+                dialog.show();
+                List<DataBean> items = getListItems();
+                MainActivity.this.initStatus(items);
+                dialog.dismiss();
+
+            }
+        });
+        this.listItems = getListItems();
+        this.initStatus(this.listItems);
+
+    }
+    //初始化状态
+    private void initStatus(List<DataBean> listItems){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);//设置日期格式
+        String timeStr = df.format(new Date());
+        DBHelper helper = new DBHelper(MainActivity.this);
+
+        for(DataBean bean:listItems){
+
+           if(bean.getClockInTime().compareTo(timeStr) < 0){
+                bean.setIsClockIn(0);
+                helper.update(bean);
+            }
+        }
         this.listItems = getListItems();
         if(!listItems.isEmpty()){
             setListItems(listItems);
@@ -53,7 +93,11 @@ public class MainActivity extends Activity {
             this.relatelayout = (RelativeLayout)findViewById(R.id.relatelayout);
             this.relatelayout.setVisibility(View.VISIBLE);
         }
+
+
     }
+
+
     @Override
     protected void onRestart(){
         super.onRestart();
@@ -185,6 +229,9 @@ public class MainActivity extends Activity {
                         d += 1;
                         listItems.get(clickID).setAmount(d);
                         listItems.get(clickID).setIsClockIn(1);
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);//设置日期格式
+                        String timeStr = df.format(new Date());
+                        listItems.get(clickID).setClockinTime(timeStr);
                         helper.update(listItems.get(clickID));
                         itemView.day.setText("第"+String.valueOf(listItems.get(clickID).getAmount())+"天");
                         itemView.clockinImg.setVisibility(View.VISIBLE);

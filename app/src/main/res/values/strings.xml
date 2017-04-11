@@ -10,4 +10,5 @@
     <string name="fa_check">&#xf00c;</string>
     <string name="hint">你还没有签到项呢！\n赶快去添加吧！</string>
     <string name="notEmpty">签到项不能为空！</string>
+    <string name="refresh">刷新</string>
 </resources>

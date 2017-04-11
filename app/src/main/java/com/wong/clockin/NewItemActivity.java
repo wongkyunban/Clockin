@@ -49,7 +49,7 @@ public class NewItemActivity extends AppCompatActivity {
                     DataBean data = new DataBean();
                     data.setAmount(0);
                     data.setTitle(itemTitle);
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);//设置日期格式
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);//设置日期格式
                     String timeStr = df.format(new Date());
                     data.setClockinTime(timeStr);
                     data.setIsClockIn(0);
